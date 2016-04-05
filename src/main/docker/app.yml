@@ -1,0 +1,21 @@
+version: '2'
+services:
+    dockerdemo-app:
+        image: dockerdemo
+        external_links:
+            - dockerdemo-mysql:mysql
+            - dockerdemo-elasticsearch:elasticsearch
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod
+            - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/dockerdemo?useUnicode=true&characterEncoding=utf8&useSSL=false
+            - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=elasticsearch:9300
+        ports:
+            - 8080:8080
+    dockerdemo-mysql:
+        extends:
+            file: mysql.yml
+            service: dockerdemo-mysql
+    dockerdemo-elasticsearch:
+        extends:
+            file: elasticsearch.yml
+            service: dockerdemo-elasticsearch
